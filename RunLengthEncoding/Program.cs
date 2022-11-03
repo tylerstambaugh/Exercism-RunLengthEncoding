@@ -13,41 +13,50 @@ public static class RunLengthEncoding
         int index = 0;
         int inputLength = input.Length;
 
-        while(index < inputLength)
+        if (input == "")
         {
-            char c = input[index];
-            if (index < inputLength - 1)
+            return input;
+        }
+        else
+        {
+            while (index < inputLength)
             {
-                if (c == input[index + 1])
+                char c = input[index];
+                if (index < inputLength - 1)
                 {
-                    numChars++;
-                    index++;
-                }
+                    if (c == input[index + 1])
+                    {
+                        numChars++;
+                        index++;
+                    }
 
-                else if (c != input[index + 1] && numChars > 1)
+                    else if (c != input[index + 1] && numChars > 1)
+                    {
+                        encodedString += numChars + c.ToString();
+                        numChars = 1;
+                        index++;
+                    }
+                    else
+                    {
+                        encodedString += c.ToString();
+                        index++;
+                    }
+                }
+                else if (index == input.Length - 1 && numChars > 1)
                 {
                     encodedString += numChars + c.ToString();
-                    numChars = 1;
                     index++;
+                    numChars = 1;
+                }
+                else if (index == input.Length - 1 && numChars == 1)
+                {
+                    encodedString += c.ToString();
+                    index++;
+                    numChars = 1;
                 }
             }
-
-            else if (index == input.Length - 1 && numChars > 1)
-            {
-                encodedString += numChars + c.ToString();
-                index++;
-                numChars = 1;
-            }
-
-            if (index == input.Length - 1 && numChars !> 1)
-            {
-                encodedString += c.ToString();
-                index++;
-                numChars = 1;
-            }
+            return encodedString;
         }
-
-        return encodedString;
     }
 
     public static string Decode(string input)
