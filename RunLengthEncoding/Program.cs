@@ -1,6 +1,7 @@
 ﻿
 
 Console.WriteLine(RunLengthEncoding.Encode("AABBBCCCC"));
+Console.WriteLine(RunLengthEncoding.Encode("XYZ"));
 Console.ReadLine();
 
 public static class RunLengthEncoding
@@ -12,10 +13,10 @@ public static class RunLengthEncoding
         int index = 0;
         int inputLength = input.Length;
 
-        while(index <= input.Length)
+        while(index < inputLength)
         {
             char c = input[index];
-            if (index < inputLength)
+            if (index < inputLength - 1)
             {
                 if (c == input[index + 1])
                 {
@@ -31,7 +32,14 @@ public static class RunLengthEncoding
                 }
             }
 
-            else if (index == input.Length)
+            else if (index == input.Length - 1 && numChars > 1)
+            {
+                encodedString += numChars + c.ToString();
+                index++;
+                numChars = 1;
+            }
+
+            if (index == input.Length - 1 && numChars !> 1)
             {
                 encodedString += c.ToString();
                 index++;
