@@ -4,7 +4,7 @@
 //Console.WriteLine(RunLengthEncoding.Encode("XYZ"));
 
 // Console.WriteLine(RunLengthEncoding.Decode("2A3B4C"));
-Console.WriteLine(RunLengthEncoding.Decode("XYZ"));
+Console.WriteLine(RunLengthEncoding.Decode("12WB12W3B24WB"));
 
 Console.ReadLine();
 
@@ -67,8 +67,8 @@ public static class RunLengthEncoding
     {
         string decodedString = "";
         string inputTrimmed = input.Trim();
-        bool isDigit;
-        
+        int inputLength = inputTrimmed.Length;
+
         if (input == "")
         {
             decodedString = "";
@@ -76,25 +76,41 @@ public static class RunLengthEncoding
 
         for (int i = 0; i < inputTrimmed.Length; i++)
         {
-            char c = input[i];
-            int countOfDigits = 1;
-            int inputLength = inputTrimmed.Length;
-            if (Char.IsDigit(c))
-            {
-                countOfDigits = Int16.Parse(c.ToString());
-            }
+            char currentChar = input[i];
+            
+            int countOfEncoding = 1;
+            
+            bool currentCharIsDigit = Char.IsDigit(currentChar);
+            bool nextCharIsDigit = false;
 
-            if (!Char.IsDigit(c) && countOfDigits == 1)
+            if (currentCharIsDigit)
             {
-                decodedString += c;
+                countOfEncoding = Int16.Parse(currentChar.ToString());
             }
 
             if (i < inputLength - 1)
             {
-                if (!Char.IsDigit(input[i + 1]) && countOfDigits > 1)
+                nextCharIsDigit = Char.IsDigit(input[i + 1]);
+                if (nextCharIsDigit && !currentCharIsDigit)
+                {
+                    string num = countOfEncoding.ToString();
+                    num += Int16.Parse(input[i + 1].ToString());
+                    countOfEncoding = Int16.Parse(num);
+                    i++;
+                }
+            }
+
+            if (!Char.IsDigit(currentChar) && countOfEncoding == 1)
+            {
+                decodedString += currentChar;
+            }
+
+            if (i < inputLength - 1)
+            {
+                if (!Char.IsDigit(input[i + 1]) && countOfEncoding > 1)
                 {
                     string decodedChars = "";
-                    for (int j = countOfDigits; j > 0; j--)
+                    for (int j = countOfEncoding; j > 0; j--)
                     {
                         decodedChars += input[i + 1].ToString();
                     }
@@ -102,9 +118,7 @@ public static class RunLengthEncoding
                     decodedString += decodedChars;
                 }
             }
-
         }
-
         return decodedString;
     }
 }
