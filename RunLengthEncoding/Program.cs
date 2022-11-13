@@ -1,10 +1,11 @@
 ﻿
+// https://exercism.org/tracks/csharp/exercises/run-length-encoding
 
 //Console.WriteLine(RunLengthEncoding.Encode("AABBBCCCC"));
 //Console.WriteLine(RunLengthEncoding.Encode("XYZ"));
 
 // Console.WriteLine(RunLengthEncoding.Decode("2A3B4C"));
-Console.WriteLine(RunLengthEncoding.Decode("12WB12W3B24WB"));
+//Console.WriteLine(RunLengthEncoding.Decode("12WB12W3B24WB"));
 
 Console.ReadLine();
 
@@ -67,8 +68,7 @@ public static class RunLengthEncoding
     public static string Decode(string input)
     {
         string decodedString = "";
-        string inputTrimmed = input.Trim();
-        int inputLength = inputTrimmed.Length;
+        int inputLength = input.Length;
 
         //empty string check
         if(input == "")
@@ -79,15 +79,15 @@ public static class RunLengthEncoding
         //main loop through encoded string
         for(int i = 0; i < inputLength; i++)
         {
-            bool isDigit = Char.IsDigit(inputTrimmed[i]);
+            bool isDigit = Char.IsDigit(input[i]);
             string countOfEncoding = "";
 
             //check to see if current char and following char(s) are digits
             while(isDigit && i < inputLength)
             {
-                countOfEncoding += inputTrimmed[i];
+                countOfEncoding += input[i];
                 i++;
-                isDigit = Char.IsDigit(inputTrimmed[i]);
+                isDigit = Char.IsDigit(input[i]);
             }
 
             //if countOfEncoding is empty, set to 1
@@ -99,7 +99,7 @@ public static class RunLengthEncoding
             //add correct number of chars to decoded string
             for(int j = 1; j <= Int16.Parse(countOfEncoding); j++)
             {
-                decodedString += inputTrimmed[i];
+                decodedString += input[i];
             }
 
             //advance index correct number of spaces
@@ -109,63 +109,5 @@ public static class RunLengthEncoding
         return decodedString;
     }
     
-    
-    //public static string Decode(string input)
-    //{
-    //    string decodedString = "";
-    //    string inputTrimmed = input.Trim();
-    //    int inputLength = inputTrimmed.Length;
 
-    //    if (input == "")
-    //    {
-    //        decodedString = "";
-    //    }
-
-    //    for (int i = 0; i < inputTrimmed.Length; i++)
-    //    {
-    //        char currentChar = input[i];
-            
-    //        int countOfEncoding = 1;
-            
-    //        bool currentCharIsDigit = Char.IsDigit(currentChar);
-    //        bool nextCharIsDigit = false;
-
-    //        if (currentCharIsDigit)
-    //        {
-    //            countOfEncoding = Int16.Parse(currentChar.ToString());
-    //        }
-
-    //        if (i < inputLength - 1)
-    //        {
-    //            nextCharIsDigit = Char.IsDigit(input[i + 1]);
-    //            if (nextCharIsDigit && !currentCharIsDigit)
-    //            {
-    //                string num = countOfEncoding.ToString();
-    //                num += Int16.Parse(input[i + 1].ToString());
-    //                countOfEncoding = Int16.Parse(num);
-    //                i++;
-    //            }
-    //        }
-
-    //        if (!Char.IsDigit(currentChar) && countOfEncoding == 1)
-    //        {
-    //            decodedString += currentChar;
-    //        }
-
-    //        if (i < inputLength - 1)
-    //        {
-    //            if (!Char.IsDigit(input[i + 1]) && countOfEncoding > 1)
-    //            {
-    //                string decodedChars = "";
-    //                for (int j = countOfEncoding; j > 0; j--)
-    //                {
-    //                    decodedChars += input[i + 1].ToString();
-    //                }
-    //                i++;
-    //                decodedString += decodedChars;
-    //            }
-    //        }
-    //    }
-    //    return decodedString;
-    //}
 }
